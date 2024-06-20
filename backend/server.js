@@ -5,12 +5,14 @@ const PORT = process.env.PORT
 const sequelize = require('./config/db')
 const models  = require('./models/models')
 const {logger} = require("sequelize/lib/utils/logger");
+const cors = require('cors')
+const router = require('./routes/index')
+app.use(cors())
+app.use(express.json())
+app.use('/api', router)
 
 const startApp = async () => {
     try {
-        app.get('/', (req, res) => {
-            return res.json({Status: 'OK'})
-        })
         await sequelize.authenticate({logging: false})
         await sequelize.sync({logging: false})
         app.listen(PORT, () => {
