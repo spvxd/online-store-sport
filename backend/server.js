@@ -7,10 +7,12 @@ const models  = require('./models/models')
 const {logger} = require("sequelize/lib/utils/logger");
 const cors = require('cors')
 const router = require('./routes/index')
+const errorHandler = require('./middleware/errorMiddleware')
 app.use(cors())
 app.use(express.json())
 app.use('/api', router)
 
+app.use(errorHandler)
 const startApp = async () => {
     try {
         await sequelize.authenticate({logging: false})
