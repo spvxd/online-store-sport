@@ -14,7 +14,11 @@ const Item = sequelize.define('item', {
     name: {type: DataTypes.STRING, unique: true, allowNull: false},
     price: {type: DataTypes.INTEGER, allowNull: true},
     rating: {type: DataTypes.INTEGER, allowNull: true, defaultValue: 0},
-    img: {type: DataTypes.INTEGER, allowNull: true},
+    img: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ''
+    },
 })
 
 const Basket = sequelize.define('basket', {
