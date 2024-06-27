@@ -5,8 +5,22 @@ const ApiError = require('../errors/error')
 
 class ItemController {
     async getAllItems(req, res, next) {
-        const allItems = await Item.findAll()
-        return res.json(allItems)
+        const {brandId, typeId} = req.query
+        let item;
+        if(!brandId && !typeId){
+             item = await Item.findAll()
+        }
+        if(!brandId && typeId){
+            item = await Item.findAll({where: {typeId}})
+        }
+        if(brandId && !typeId){
+            item = await Item.findAll({where: {brandId}})
+        }
+        if(brandId && typeId){
+            item = await Item.findAll({where: {brandId, typeId}})
+        }
+
+        return res.json(item)
     }
 
     async getOneItem(req, res, next) {
@@ -27,8 +41,8 @@ class ItemController {
             const {img} = req.files
             let fileName = uuid.v4() + ".jpg"
             await img.mv(path.resolve(__dirname, '..', 'static', fileName))
-            const device = await Item.create({name, price, brandId, typeId, img: fileName});
-            return res.json(device)
+            const item = await Item.create({name, price, brandId, typeId, img: fileName});
+            return res.json(item)
         } catch (e) {
             next(ApiError.badRequest(e.message))
         }
