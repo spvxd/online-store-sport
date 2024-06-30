@@ -7,16 +7,16 @@ class ItemController {
     async getAllItems(req, res, next) {
         const {brandId, typeId} = req.query
         let item;
-        if(!brandId && !typeId){
-             item = await Item.findAll()
+        if (!brandId && !typeId) {
+            item = await Item.findAll()
         }
-        if(!brandId && typeId){
-            item = await Item.findAll({where: {typeId}})
+        if (!brandId && typeId) {
+            item = await Item.findAll({ where: {typeId}})
         }
-        if(brandId && !typeId){
+        if (brandId && !typeId) {
             item = await Item.findAll({where: {brandId}})
         }
-        if(brandId && typeId){
+        if (brandId && typeId) {
             item = await Item.findAll({where: {brandId, typeId}})
         }
 
