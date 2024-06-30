@@ -5,13 +5,16 @@ const ApiError = require('../errors/error')
 
 class ItemController {
     async getAllItems(req, res, next) {
-        const {brandId, typeId} = req.query
+        let {brandId, typeId, limit, page} = req.query
+        page = page || 1;
+        limit = limit || 10;
         let item;
+        let offset = page * limit - limit;
         if (!brandId && !typeId) {
-            item = await Item.findAll()
+            item = await Item.findAll({limit, offset})
         }
         if (!brandId && typeId) {
-            item = await Item.findAll({ where: {typeId}})
+            item = await Item.findAll({ where: {typeId}, limit, offset})
         }
         if (brandId && !typeId) {
             item = await Item.findAll({where: {brandId}})
